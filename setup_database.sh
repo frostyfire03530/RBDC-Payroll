@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS payroll_development;
+CREATE DATABASE IF NOT EXISTS payroll_test;
+CREATE DATABASE IF NOT EXISTS payroll_production;

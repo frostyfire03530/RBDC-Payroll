@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @timesheet.date %>
+</p>
+
+<p>
+  <strong>Timein:</strong>
+  <%= @timesheet.timein.strftime("%I:%M%p") %>
+</p>
+
+<p>
+  <strong>Timeout:</strong>
+  <%= @timesheet.timeout.strftime("%I:%M%p") %>
+</p>
+
+<p>
+  <strong>Hours:</strong>
+  <%= @timesheet.hours %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+    <%= @timesheet.project %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @timesheet.description %>
+</p>
+
+<%= link_to 'Edit', edit_user_timesheet_path(@current_user, @timesheet) %> |
+<%= link_to 'Back', user_timesheets_path(@current_user) %>
