@@ -1,4 +1,4 @@
-<%= form_for [@current_user, @timesheet] do |f| %>
+<%= form_for [@url_user, @timesheet] do |f| %>
   <% if @timesheet.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@timesheet.errors.count, "error") %> prohibited this timesheet from being saved:</h2>

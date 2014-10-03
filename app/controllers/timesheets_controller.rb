@@ -4,32 +4,32 @@ class TimesheetsController < ApplicationController
 
   # GET /timesheets
   def index
-      @current_user = User.find(params[:user_id])
+    @url_user = User.find(params[:user_id])
     @timesheets = Timesheet.all
   end
 
   # GET /timesheets/1
   def show
-      @current_user = User.find(params[:user_id])
+      @url_user = User.find(params[:user_id])
   end
 
   # GET /timesheets/new
   def new
-    @current_user = User.find(params[:user_id])
+    @url_user = User.find(params[:user_id])
     @projects = Project.all
     @timesheet = Timesheet.new
   end
 
   # GET /timesheets/1/edit
   def edit
-    @current_user = User.find(params[:user_id])
+    @url_user = User.find(params[:user_id])
     @projects = Project.all
   end
 
   # POST /timesheets
   def create
     @projects = Project.all
-    @current_user = User.find(params[:user_id])
+    @url_user = User.find(params[:user_id])
     @timesheet = Timesheet.new(timesheet_params)
     @current_time = Time.now
     if @timesheet.timeout > @current_time then
@@ -37,11 +37,11 @@ class TimesheetsController < ApplicationController
     end
 
     @timesheet.hours = ((@timesheet.timeout - @timesheet.timein).to_d / 3600)
-    @timesheet.user_id = @current_user.id
-    @timesheet.payrate = @current_user.payrate
+    @timesheet.user_id = @url_user.id
+    @timesheet.payrate = @url_user.payrate
 
     if @timesheet.save
-        redirect_to user_timesheets_path(@current_user), notice: 'Timesheet was successfully created.'
+        redirect_to user_timesheets_path(@url_user), notice: 'Timesheet was successfully created.'
     else
       render :new
     end
@@ -50,13 +50,13 @@ class TimesheetsController < ApplicationController
   # PATCH/PUT /timesheets/1
   def update
     @projects = Project.all
-    @current_user = User.find(params[:user_id])
+    @url_user = User.find(params[:user_id])
     timesheet = Timesheet.new(timesheet_params)
     @timesheet.hours = ((timesheet.timeout - timesheet.timein).to_d / 3600)
-    @timesheet.user_id = @current_user.id
-    @timesheet.payrate = @current_user.payrate
+    @timesheet.user_id = @url_user.id
+    @timesheet.payrate = @url_user.payrate
     if @timesheet.update(timesheet_params)
-      redirect_to user_timesheets_path(@current_user), notice: 'Timesheet was successfully updated.'
+      redirect_to user_timesheets_path(@url_user), notice: 'Timesheet was successfully updated.'
     else
       render :edit
     end
@@ -64,7 +64,7 @@ class TimesheetsController < ApplicationController
 
   # DELETE /timesheets/1
   def destroy
-      @current_user = User.find(params[:user_id])
+      @url_user = User.find(params[:user_id])
     @timesheet.destroy
       redirect_to user_timesheets_url, notice: 'Timesheet was successfully destroyed.'
   end

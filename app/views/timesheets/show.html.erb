@@ -30,5 +30,5 @@
   <%= @timesheet.description %>
 </p>
 
-<%= link_to 'Edit', edit_user_timesheet_path(@current_user, @timesheet) %> |
-<%= link_to 'Back', user_timesheets_path(@current_user) %>
+<%= link_to 'Edit', edit_user_timesheet_path(@url_user, @timesheet) %> |
+<%= link_to 'Back', user_timesheets_path(@url_user) %>
