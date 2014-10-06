@@ -1,10 +1,19 @@
 Rails.application.routes.draw do
     
   devise_for :users
-  root to: "home#index"
     
   scope "/admin" do
     resources :projects
+  end
+    
+  devise_scope :user do
+    authenticated :user do
+      root 'timesheets#index', as: :authenticated_root
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
   end
 
   resources :users do
