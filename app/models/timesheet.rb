@@ -2,7 +2,13 @@ class Timesheet < ActiveRecord::Base
     belongs_to :user
 
     validates :date, :timein, :timeout, :hours, :description, :payrate, :project, presence: true
-    validate :timesheet_cannot_be_in_the_future, :timeout_cannot_be_before_timein, :date_is_not_in_pay_period
+    validate :check_if_current_user_is_url_user, :timesheet_cannot_be_in_the_future, :timeout_cannot_be_before_timein, :date_is_not_in_pay_period
+    
+    def check_if_current_user_is_url_user
+        if current_user.id != @url_user.id
+            redirect_to user_timesheets_path(current_user.id)
+        end
+    end
     
     def timesheet_cannot_be_in_the_future
         if timeout.present? && timeout >= Time.now
