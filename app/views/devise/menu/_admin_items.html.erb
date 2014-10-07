@@ -1,0 +1,8 @@
+<% if user_signed_in? && (current_user.role == 'admin') %>
+  <li>
+    <%= link_to('Accounting', users_path) %>        
+  </li>
+  <li>
+    <%= link_to('Users', users_path) %>        
+  </li>
+<% end %>
