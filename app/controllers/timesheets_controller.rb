@@ -1,5 +1,24 @@
 class TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
+    
+  def pay_period_date
+    @period_date = ""
+    current_date = Date.today
+    @is_first_part_of_month = false
+    if current_date.strftime("%d").to_i <= 15
+      @is_first_part_of_month = true
+    end
+    if @is_first_part_of_month
+      @period_date = current_date.strftime("%m/01/%Y to %m/15/%Y")
+    else
+      holding_date = Date.today.end_of_month
+      @period_date = holding_date.strftime("%m/16/%Y to %m/%d/%Y")
+    end
+  end
+    
+  def is_first_part_of_month
+      
+  end
 
   def check_if_current_user
     if defined?(current_user.id)
@@ -15,8 +34,18 @@ class TimesheetsController < ApplicationController
   # GET /timesheets
   def index
     check_if_current_user
+    pay_period_date
     @url_user = User.find(params[:user_id])
-    @timesheets = Timesheet.where({:user_id => @url_user.id})
+    #@timesheets = Timesheet.where({:user_id => @url_user.id })
+    if @is_first_part_of_month
+      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: Date.today.at_beginning_of_month, end_date: (Date.today.at_beginning_of_month + 14), url_user: @url_user.id})
+    else
+      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: (Date.today.at_beginning_of_month + 15), end_date: (Date.today.end_of_month), url_user: @url_user.id})
+    end
+    @total_hours = 0
+    @timesheets.each do |timesheet|
+    @total_hours = @total_hours + timesheet.hours
+    end
   end
 
   # GET /timesheets/1
