@@ -1,19 +1,33 @@
 class TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
 
+  def check_if_current_user
+    if defined?(current_user.id)
+      @url_user = User.find(params[:user_id])
+      if current_user.id != @url_user.id
+        redirect_to user_timesheets_path(current_user.id)
+      end
+    else
+        redirect_to new_user_session_path
+    end
+  end
+    
   # GET /timesheets
   def index
+    check_if_current_user
     @url_user = User.find(params[:user_id])
-    @timesheets = Timesheet.all
+    @timesheets = Timesheet.where({:user_id => @url_user.id})
   end
 
   # GET /timesheets/1
   def show
-      @url_user = User.find(params[:user_id])
+    check_if_current_user
+    @url_user = User.find(params[:user_id])
   end
 
   # GET /timesheets/new
   def new
+    check_if_current_user
     @url_user = User.find(params[:user_id])
     @projects = Project.all
     @timesheet = Timesheet.new
@@ -21,12 +35,14 @@ class TimesheetsController < ApplicationController
 
   # GET /timesheets/1/edit
   def edit
+    check_if_current_user
     @url_user = User.find(params[:user_id])
     @projects = Project.all
   end
 
   # POST /timesheets
   def create
+    check_if_current_user
     @projects = Project.all
     @url_user = User.find(params[:user_id])
     @timesheet = Timesheet.new(timesheet_params)
@@ -48,6 +64,7 @@ class TimesheetsController < ApplicationController
 
   # PATCH/PUT /timesheets/1
   def update
+    check_if_current_user
     @projects = Project.all
     @url_user = User.find(params[:user_id])
     timesheet = Timesheet.new(timesheet_params)
@@ -63,9 +80,10 @@ class TimesheetsController < ApplicationController
 
   # DELETE /timesheets/1
   def destroy
-      @url_user = User.find(params[:user_id])
+    check_if_current_user
+    @url_user = User.find(params[:user_id])
     @timesheet.destroy
-      redirect_to user_timesheets_url, notice: 'Timesheet was successfully destroyed.'
+    redirect_to user_timesheets_url, notice: 'Timesheet was successfully destroyed.'
   end
 
   private
