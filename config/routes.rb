@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     
   scope "/admin" do
     resources :projects
+    resources :users
   end
     
   devise_scope :user do
