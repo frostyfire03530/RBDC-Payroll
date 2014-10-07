@@ -25,11 +25,19 @@
   </div>
   <div class="field">
     <%= f.label :password %><br>
-    <%= f.text_field :password %>
+    <%= f.password_field :password %>
+  </div>
+  <div class="field">
+    <%= f.label :role %><br>
+      <%= f.select(:role, options_for_select([ "user", "admin" ], "user")) %>
   </div>
   <div class="field">
     <%= f.label :payrate %><br>
     <%= f.text_field :payrate %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.check_box :active %>
   </div>
   <div class="actions">
     <%= f.submit %>
