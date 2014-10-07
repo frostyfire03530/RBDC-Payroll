@@ -12,12 +12,22 @@
 
 <p>
   <strong>Password:</strong>
-  <%= @user.password %>
+  <%= @user.encrypted_password %>
+</p>
+
+<p>
+  <strong>Role:</strong>
+  <%= @user.role %>
 </p>
 
 <p>
   <strong>Payrate:</strong>
   <%= @user.payrate %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @user.active %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
