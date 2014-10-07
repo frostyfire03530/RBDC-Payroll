@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  if defined? current_user
+    if current_user.role != :admin
+      redirect_to user_timesheets_path(current_user.id), notice: 'You do not have access to this resource.'
+    end
+  end
 
   # GET /users
   def index
