@@ -50,7 +50,7 @@ class UsersController < ApplicationController
   def create
     admin_check
     @user = User.new(user_params)
-    @user.encrypted_password = user_params['password'].encrypted_password
+    @user.encrypted_password = User.new(password: user_params['password']).encrypted_password
 
     if @user.save
       redirect_to @user, notice: 'User was successfully created.'
@@ -84,6 +84,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :payrate, :active, :role)
+        params.require(:user).permit(:first_name, :last_name, :email, :password, :payrate, :active, :role)
     end
 end
