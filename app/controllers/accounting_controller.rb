@@ -1,11 +1,20 @@
 class AccountingController < ApplicationController
   before_action :set_accounting, only: [:show, :edit, :update, :destroy]
     
-  
+  def admin_check
+    if defined?(current_user.id)
+      if current_user.role != 'admin'
+        redirect_to user_timesheets_path(current_user.id), notice: 'You do not have access to this resource.'
+      end
+    else
+      redirect_to new_user_session_path
+    end
+  end
 
 
   # GET /accounting
   def index
+      admin_check
       @projects = Project.all
       @users_active = User.where(active: true)
       @users_inactive = User.where(active: false)
