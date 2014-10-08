@@ -1,8 +1,22 @@
-<h1>Acconting</h1>
+<h1>Accounting</h1>
 
-<h3>Totals Hours For Pay Period:</h3>
+<h3>Payroll:</h3>
 
-<%= debug @results %>
+<select>
+    <% @payperiods.each do | payperiod | %>
+    <option><%= payperiod %></option>
+    <% end %>
+</select>
+<button>View</button>
 
+<h3>Project Records:</h3>
+  <%= select_tag "project", options_from_collection_for_select(@projects, 'name', 'name') %>
+<button>View</button>
 
-<br>
+<h3>Employee Records:</h3>
+  <h4>Active:</h4>
+<%= select_tag "user_timesheets", options_from_collection_for_select(@users_active, :id, :full_name) %>
+  <button>View</button>
+  <h4>Inactive:</h4>
+  <%= select_tag "user_timesheets", options_from_collection_for_select(@users_inactive, :id, :full_name) %>
+  <button>View</button>
