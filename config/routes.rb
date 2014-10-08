@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   scope "/admin" do
     resources :projects
     resources :users
+    resources :accounting
   end
     
   devise_scope :user do
