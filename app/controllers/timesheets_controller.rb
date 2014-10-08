@@ -38,9 +38,9 @@ class TimesheetsController < ApplicationController
     @url_user = User.find(params[:user_id])
     #@timesheets = Timesheet.where({:user_id => @url_user.id })
     if @is_first_part_of_month
-      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: Date.today.at_beginning_of_month, end_date: (Date.today.at_beginning_of_month + 14), url_user: @url_user.id})
+      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: Date.today.at_beginning_of_month, end_date: (Date.today.at_beginning_of_month + 14), url_user: @url_user.id}).order("date ASC")
     else
-      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: (Date.today.at_beginning_of_month + 15), end_date: (Date.today.end_of_month), url_user: @url_user.id})
+      @timesheets = Timesheet.where("date >= :start_date AND date <= :end_date AND user_id = :url_user", {start_date: (Date.today.at_beginning_of_month + 15), end_date: (Date.today.end_of_month), url_user: @url_user.id}).order("date ASC")
     end
     @total_hours = 0
     @timesheets.each do |timesheet|
