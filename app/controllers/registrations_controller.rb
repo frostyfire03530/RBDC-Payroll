@@ -1,7 +1,13 @@
 class RegistrationsController < Devise::RegistrationsController
+    
+  def new
+    flash[:notice] = 'Registrations are not open.'
+    redirect_to new_user_session_path
+  end
  
   def create
-    super #Nothing special here.
+    flash[:notice] = 'Registrations are not open.'
+    redirect_to new_user_session_path
   end
 
   protected
