@@ -75,6 +75,8 @@ class TimesheetsController < ApplicationController
     @projects = Project.all
     @url_user = User.find(params[:user_id])
     @timesheet = Timesheet.new(timesheet_params)
+    @timesheet.timein = Time.new(@timesheet.date.year, @timesheet.date.month, @timesheet.date.day, @timesheet.timein.hour, @timesheet.timein.min, @timesheet.timein.sec)
+    @timesheet.timeout = Time.new(@timesheet.date.year, @timesheet.date.month, @timesheet.date.day, @timesheet.timeout.hour, @timesheet.timeout.min, @timesheet.timeout.sec)
     @current_time = Time.now
     if @timesheet.timeout > @current_time then
         @timesheet.errors.add(:timeout, "cannot be for a future time.")
@@ -97,6 +99,8 @@ class TimesheetsController < ApplicationController
     @projects = Project.all
     @url_user = User.find(params[:user_id])
     timesheet = Timesheet.new(timesheet_params)
+    timesheet.timein = Time.new(timesheet.date.year, timesheet.date.month, timesheet.date.day, timesheet.timein.hour, timesheet.timein.min, timesheet.timein.sec)
+    timesheet.timeout = Time.new(timesheet.date.year, timesheet.date.month, timesheet.date.day, timesheet.timeout.hour, timesheet.timeout.min, timesheet.timeout.sec)  
     @timesheet.hours = ((timesheet.timeout - timesheet.timein).to_d / 3600)
     @timesheet.user_id = @url_user.id
     @timesheet.payrate = @url_user.payrate
