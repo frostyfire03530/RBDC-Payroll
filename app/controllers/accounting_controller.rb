@@ -30,6 +30,7 @@ class AccountingController < ApplicationController
       
       if is_first_part_of_month
         @payperiods << @oldest_date_in_timesheet.strftime("%m/01/%Y -> %m/15/%Y")
+        
       else
         @payperiods << @oldest_date_in_timesheet.end_of_month.strftime("%m/16/%Y -> %m/%d/%Y")
       end
