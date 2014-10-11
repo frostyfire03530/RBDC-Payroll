@@ -78,10 +78,6 @@ class TimesheetsController < ApplicationController
     @timesheet.timein = Time.new(@timesheet.date.year, @timesheet.date.month, @timesheet.date.day, @timesheet.timein.hour, @timesheet.timein.min, @timesheet.timein.sec)
     @timesheet.timeout = Time.new(@timesheet.date.year, @timesheet.date.month, @timesheet.date.day, @timesheet.timeout.hour, @timesheet.timeout.min, @timesheet.timeout.sec)
     @current_time = Time.now
-    if @timesheet.timeout > @current_time then
-        @timesheet.errors.add(:timeout, "cannot be for a future time.")
-    end
-
     @timesheet.hours = ((@timesheet.timeout - @timesheet.timein).to_d / 3600)
     @timesheet.user_id = @url_user.id
     @timesheet.payrate = @url_user.payrate
@@ -104,6 +100,7 @@ class TimesheetsController < ApplicationController
     @timesheet.hours = ((timesheet.timeout - timesheet.timein).to_d / 3600)
     @timesheet.user_id = @url_user.id
     @timesheet.payrate = @url_user.payrate
+    
     if @timesheet.update(timesheet_params)
       redirect_to user_timesheets_path(@url_user), notice: 'Timesheet was successfully updated.'
     else
