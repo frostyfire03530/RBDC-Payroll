@@ -2,7 +2,8 @@ class Timesheet < ActiveRecord::Base
     belongs_to :user
 
     validates :date, :timein, :timeout, :hours, :description, :payrate, :project, presence: true
-    validate :timesheet_cannot_be_in_the_future, :timeout_cannot_be_before_timein, :date_is_not_in_pay_period, :timesheets_cannot_overlap
+    validate :timesheet_cannot_be_in_the_future, :timeout_cannot_be_before_timein, :date_is_not_in_pay_period, 
+    before_save {:timesheets_cannot_overlap}
     
     def timesheet_cannot_be_in_the_future
         #Check if the user has inputed a timeout that is after the current time and if true create an error.
@@ -42,8 +43,9 @@ class Timesheet < ActiveRecord::Base
     end
     
     def timesheets_cannot_overlap
+        url_user = self.user
         #Grab all the timesheets for the current_user
-        user_timesheets = Timesheet.where(user_id: @url_user.id)
+        user_timesheets = Timesheet.where(user_id: url_user)
     
         #Loop through each of the current_user's timesheets
         user_timesheets.each do | user_timesheet |

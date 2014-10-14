@@ -1,5 +1,10 @@
 class TimesheetsController < ApplicationController
   before_action :set_timesheet, only: [:show, :edit, :update, :destroy]
+  #before_action :before_any_route
+    
+  #def before_any_route
+  #   Timesheet.timesheets_cannot_overlap(url_user)
+  #end
     
   def pay_period_date
     @period_date = ""
@@ -14,10 +19,6 @@ class TimesheetsController < ApplicationController
       holding_date = Date.today.end_of_month
       @period_date = holding_date.strftime("%m/16/%Y to %m/%d/%Y")
     end
-  end
-    
-  def is_first_part_of_month
-      
   end
 
   def check_if_current_user
@@ -79,7 +80,7 @@ class TimesheetsController < ApplicationController
     @timesheet.timeout = Time.new(@timesheet.date.year, @timesheet.date.month, @timesheet.date.day, @timesheet.timeout.hour, @timesheet.timeout.min, @timesheet.timeout.sec)
     @current_time = Time.now
     @timesheet.hours = ((@timesheet.timeout - @timesheet.timein).to_d / 3600)
-    @timesheet.user_id = @url_user.id
+    @timesheet.user = @url_user
     @timesheet.payrate = @url_user.payrate
 
     if @timesheet.save
@@ -98,7 +99,7 @@ class TimesheetsController < ApplicationController
     timesheet.timein = Time.new(timesheet.date.year, timesheet.date.month, timesheet.date.day, timesheet.timein.hour, timesheet.timein.min, timesheet.timein.sec)
     timesheet.timeout = Time.new(timesheet.date.year, timesheet.date.month, timesheet.date.day, timesheet.timeout.hour, timesheet.timeout.min, timesheet.timeout.sec)  
     @timesheet.hours = ((timesheet.timeout - timesheet.timein).to_d / 3600)
-    @timesheet.user_id = @url_user.id
+    @timesheet.user = @url_user
     @timesheet.payrate = @url_user.payrate
     
     if @timesheet.update(timesheet_params)
